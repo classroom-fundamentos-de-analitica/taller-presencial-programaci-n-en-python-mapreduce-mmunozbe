@@ -42,7 +42,11 @@ def load_input(input_directory):
 #   ]
 #
 def mapper(sequence):
-    new_sequence = [(word, 1) for _, line in sequence for word in line.split()]
+    new_sequence = [
+        (word.casefold().replace(".", "").replace(",", ""), 1) 
+        for _, line in sequence 
+        for word in line.split()
+        ]
     return new_sequence
 
 
@@ -122,9 +126,9 @@ def job(input_directory, output_directory):
     sequence = mapper(sequence)
     sequence = shuffle_and_sort(sequence)
     sequence = reducer(sequence)
-    create_ouptput_directory("output")
-    save_output("output", sequence)
-    create_marker("output")
+    create_ouptput_directory(output_directory)
+    save_output(output_directory, sequence)
+    create_marker(output_directory)
 
 
 
